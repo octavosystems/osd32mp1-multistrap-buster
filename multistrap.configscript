@@ -1,0 +1,73 @@
+#!/bin/bash
+#
+# This script will configure the partially built debian system.
+# It is expected to be run as root, in a chroot, using the target
+# architecture, after multistrap has been run
+
+root_pwd="root"
+user_name="debian"
+user_pwd="tmppwd"
+hostname="octavo_install"
+
+export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+export LC_ALL=C LANGUAGE=C LANG=C
+
+mount proc -t proc /proc
+mount sysfs -t sysfs /sys
+
+dpkg --configure -a
+
+# set root password
+passwd root <<EOF
+$root_pwd
+$root_pwd
+EOF
+
+# Set useradd default shell
+sed -i 's#SHELL=/bin/sh#SHELL=/bin/bash#g' etc/default/useradd
+useradd -G sudo -m -d /home/$user_name $user_name
+passwd $user_name <<EOF
+$user_pwd
+$user_pwd
+EOF
+
+dpkg --configure -a
+
+# Update CA certicates for curl
+update-ca-certificates -f
+c_rehash
+
+# To launch window manager at startup
+systemctl enable weston.service
+
+# To launch network manager
+systemctl enable systemd-networkd.service
+
+# To launch SSH server
+systemctl enable ssh
+
+# To prevent the system from waiting on a network connection at startup
+systemctl disable systemd-networkd-wait-online.service
+# To prevent the service from starting if requested by another service
+systemctl mask systemd-networkd-wait-online.service
+
+# Prevent wifi services without configuration
+systemctl disable wpa_supplicant.service
+systemctl disable hostapd.service
+
+# Link to vendor FS
+ln -sf /vendor/lib/gbm_viv.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/gbm_viv.so
+ln -sf /vendor/lib/libEGL.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libEGL.so.1
+ln -sf /usr/lib/arm-linux-gnueabihf/libEGL.so.1 /usr/lib/arm-linux-gnueabihf/libEGL.so
+ln -sf /vendor/lib/libGAL.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libGAL.so
+ln -sf /vendor/lib/libGLESv1_CM.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libGLESv1_CM.so
+ln -sf /vendor/lib/libGLESv2.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2
+ln -sf /usr/lib/arm-linux-gnueabihf/libGLESv2.so.2 /usr/lib/arm-linux-gnueabihf/libGLESv2.so
+ln -sf /vendor/lib/libGLSLC.6.2.4.multi.release.so  /usr/lib/arm-linux-gnueabihf/libGLSLC.so
+ln -sf /vendor/lib/libOpenVG.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libOpenVG.so
+ln -sf /vendor/lib/libVSC.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libVSC.so
+ln -sf /vendor/lib/libgbm.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libgbm.so.1
+ln -sf /usr/lib/arm-linux-gnueabihf/libgbm.so.1 /usr/lib/arm-linux-gnueabihf/libgbm.so
+
+umount /proc
+umount /sys

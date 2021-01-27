@@ -1,0 +1,35 @@
+[General]
+arch=armhf
+unpack=true
+bootstrap=Debian
+aptsources=Debian
+addimportant=true
+allowrecommends=true
+debconfseed=debian-debconf
+configscript=multistrap.configscript
+
+[Debian]
+source=http://ftp.us.debian.org/debian
+keyring=debian-archive-keyring
+suite=buster
+components=main contrib non-free
+
+# Based on Emdebian Grip used for embedded systems
+packages= base-files base-passwd bash bsdutils coreutils debianutils dpkg e2fslibs e2fsprogs findutils grep gzip hostname initscripts libacl1 libattr1 libblkid1 libc6 libcomerr2 libdevmapper1.02.1 libgcc1 liblocale-gettext-perl libncurses5 libpam-modules libpam-runtime libpam0g libselinux1 libsepol1 libslang2 libss2 libstdc++6 libtext-charwidth-perl libtext-iconv-perl libtext-wrapi18n-perl libuuid1 sudo lsb-base makedev mawk mount ncurses-base ncurses-bin passwd perl-base procps sed systemd systemd-sysv tar tzdata util-linux zlib1g
+
+# Network configuration tools
+packages= iproute2 net-tools iputils-ping wpasupplicant iw hostapd openssh-server
+
+# User packages
+packages= git tree udev kmod dbus locales usbutils gpiod alsa-utils bluez v4l-utils i2c-tools can-utils ca-certificates
+
+# Gstreamer
+packages= gstreamer1.0-tools
+packages= gstreamer1.0-plugins-base gstreamer1.0-plugins-good streamer1.0-plugins-bad gstreamer1.0-plugins-ugly
+#packages= gstreamer1.0-libav
+
+# Weston
+packages= weston wayland-protocols xwayland kbd edid-decode libdrm-dev kmscube
+
+# Debug tools
+packages= strace gdb gdbserver
