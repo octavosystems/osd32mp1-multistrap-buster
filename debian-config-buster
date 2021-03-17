@@ -25,7 +25,7 @@ packages= git tree udev kmod dbus locales usbutils gpiod alsa-utils bluez v4l-ut
 
 # Gstreamer
 packages= gstreamer1.0-tools
-packages= gstreamer1.0-plugins-base gstreamer1.0-plugins-good streamer1.0-plugins-bad gstreamer1.0-plugins-ugly
+packages= gstreamer1.0-plugins-base gstreamer1.0-plugins-good streamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-plugins-base-apps libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x gstreamer1.0-alsa gstreamer1.0-pulseaudio
 #packages= gstreamer1.0-libav
 
 # Weston

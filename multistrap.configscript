@@ -46,6 +46,7 @@ systemctl enable systemd-networkd.service
 # To launch SSH server
 systemctl enable ssh
 
+
 # To prevent the system from waiting on a network connection at startup
 systemctl disable systemd-networkd-wait-online.service
 # To prevent the service from starting if requested by another service
@@ -68,6 +69,9 @@ ln -sf /vendor/lib/libOpenVG.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf
 ln -sf /vendor/lib/libVSC.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libVSC.so
 ln -sf /vendor/lib/libgbm.6.2.4.multi.release.so /usr/lib/arm-linux-gnueabihf/libgbm.so.1
 ln -sf /usr/lib/arm-linux-gnueabihf/libgbm.so.1 /usr/lib/arm-linux-gnueabihf/libgbm.so
+
+# Enable RNDIS
+systemctl enable usbotg-config
 
 umount /proc
 umount /sys
